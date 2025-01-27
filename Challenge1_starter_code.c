@@ -28,7 +28,7 @@ int main() {
 
    srand (time(0));
 
-   alarm(5);
+   
 
    //Function Pointer
    void(*sigHandlerReturn)(int);
@@ -50,6 +50,7 @@ int main() {
       char txt[4];
     
       printf("\nWhat is %d times %d: ", a, b);
+      alarm(5);
       fgets(txt, 4, stdin);
 
       int answer = atoi(txt);

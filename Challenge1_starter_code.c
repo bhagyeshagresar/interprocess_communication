@@ -32,7 +32,6 @@ int main() {
 
    //Function Pointer
    void(*sigHandlerReturn)(int);
-   //void(*alarmSigHandlerReturn)(int);
 
    //Use the signal function to catch the signals
    sigHandlerReturn = signal(SIGINT, handler_sigint);

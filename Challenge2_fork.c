@@ -1,56 +1,46 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-
+#include <wait.h>
 
 //We want to create 1 Parent Process and 3 Children Processes
 
 //main is our parent process
 
+//getppid() : returns the process ID of the parent of the calling process
+// getppid() returns the process ID of the parent of the  current process. It never throws any error
+//therefore, it is always successful.
+
+
+//getpid(): returns the process ID of current process. It never thrwos and it is always successful
 
 
 int main(){
 
-    pid_t pid;
 
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 3; ++i){
+        pid_t pid = fork();
 
-        pid = fork();
-
-       
-        if(pid == 0){
-            printf("This is a child process %d with parent ID %d and child process ID : %d\n", i+1, getppid(), getpid());
-            exit(0);
+        if(pid < 0){
+            perror("Fork failed\n");
+            exit(EXIT_FAILURE);
         }
-        else if(pid < 0){
-            perror("Error using fork() to creat children processes\n");
-            exit(1);
+        else if(pid > 0){
+            //Termiante the zombie
+            wait(NULL);
+            printf("This is parent process with process ID %d \n", getpid());
+            
         }
+        else{
 
+            printf("This is a child process with process ID %d \n", getpid());
+            exit(EXIT_SUCCESS);
+            //Process becomes a zombie
 
-
-
-        // if(pid == getpid() + 1){
-        //     printf("This is a first child process with parent ID %d and child process ID : %d\n", getpid(), getppid());
-        //     exit(0);
-        // }
-        // else if(pid == getpid() + 2){
-        //     printf("This is a second child process with parent ID %d and child process ID : %d\n", getpid(), getppid());
-        //     exit(0);
-        // }
-        // else if(pid == getpid() + 3){
-        //     printf("This is a third child process with parent ID %d and child process ID : %d\n", getpid(), getppid());
-        //     exit(0);
-        // }
-        // else{
-        //     perror("Error using fork() to creat children processes\n");
-        //     exit(1);
-        // }
-
+        }
     }
 
     
-
 
     return 0;
 }
